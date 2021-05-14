@@ -8,6 +8,7 @@
 
 /**
  * @author Josélio de S. C. Júnior <joseliojrx25@gmail.com>
+ * @WARNING Still not working properly in Safari or Safari in iOS. Needs to be fixed!
  * @requires <input type="text" ... >
  * @description Makes a type text HTMLInputElement to work similar as a type number HTMLInputElement and allows
  * to set the maximum range of digits of an integer or of a decimal number.
