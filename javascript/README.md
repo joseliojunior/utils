@@ -2,6 +2,8 @@
 
 ## *function* numberInput(	); 
 
+### :warning:  This function have some features that are not supported by Safari browsers!
+
 ## Description
 ​	This function makes a type text HTML input element to work similar as a type number with maximum range of digits. So you can choose if the HTML input element will be receiving a positive or a negative number, if it is an integer or a decimal number and the maximum length of digits in both integer and decimal regions of the number.
 
