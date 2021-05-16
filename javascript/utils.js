@@ -66,3 +66,34 @@ export function numberInput(input, integerMaxLength, numberType, decimalMaxLengt
         return input.value = value.replace(ip, '');
     });
 };
+
+/**
+ * @author Josélio de S. C. Júnior <joseliojrx25@gmail.com>
+ * @warning ⚠ This function have some features that are not supported by Safari browsers!
+ * @requires <input type="text" ... >
+ * @description Makes a type text HTMLInputElement to work similar as a type number HTMLInputElement and allows to set the maximum range of digits.
+ * 
+ * @param {HTMLInputElement} input The input element where this function will be working on.
+ * @param {Number?} maxLength Number that specifies the maximum length of the integer range.
+ *
+ * When max element attribute is not empty, the maximum length will be set according this number.
+ * 
+ * When maxlength element attribute is not empty, the maximum length will be set according this number.
+ * 
+ * When setted as null, the maximum length will be set as 4 by default.
+ */
+ export function digitInput(input, maxLength) {
+
+    input.addEventListener('input', ()=> {
+
+        const value = input.value;
+        
+        const max = input.max != null && input.max != '' ? input.max
+        : input.maxlength != null && input.maxlength != '' ? input.maxlength
+        : maxLength != null ? maxLength : 4;
+
+        const numbers = new RegExp(`[^0-9]|(?<=\\d{${max}})\\d+`);
+        if (value.match(numbers))
+        return input.value = value.replace(numbers, '');
+    });
+};
