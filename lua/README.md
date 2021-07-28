@@ -11,6 +11,6 @@
 
 ````lua
 local str = 'A maçã que estava na árvore caíra no chão.'
-print(str)			-- A ma├º├ú que estava na ├írvore ca├¡ra no ch├úo.
-print(xASCII(str))   -- A maçã que estava na árvore caíra no chão. 
+print(str)          -- A ma├º├ú que estava na ├írvore ca├¡ra no ch├úo.
+print(xASCII(str))  -- A maçã que estava na árvore caíra no chão. 
 ````
