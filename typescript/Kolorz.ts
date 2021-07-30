@@ -3,7 +3,7 @@
  * @copyright Josélio de S. C. Júnior 2021
  */
 const rgx = {
-    invalidHex: /[^ #a-f_0-9]/g,
+    validHex: /^#*[a-f_A-F_0-9]{3,6}$/g,
     validRgb: /^(rgb\((\d+,){2}\d+\)|\((\d+,){2}\d+\)|(\d+,){2}\d+)$/g,
     validHsl: /^(hsl\(\d+,\d+%*,\d+%*\)|\(\d+,\d+%*,\d+%*\)|\d+,\d+%*,\d+%*)$/g,
     hex: /[# ]/g,
@@ -13,15 +13,16 @@ const rgx = {
 };
 
 function HEXtoRGB(str: string) {
+
     // Default response.
     const def = 'rgb(0, 0, 0)';
 
     // If it is not a hex pattern returns default value.
-    if (typeof str !== 'string' || str.match(rgx.invalidHex))
+    if (typeof str !== 'string' || !str.replace(rgx.space, '').match(rgx.validHex))
         return def;
 
     // Parses to decimal base.
-    const conv = (x: Array<string>) => x.map(x => parseInt(x, 16)).join(', '),
+    const conv = (x: any[]) => x.map((x: string) => parseInt(x, 16)).join(', '),
 
         // Replace all spaces and hash symbol.
         v = str.replace(rgx.hex, '');
@@ -32,7 +33,6 @@ function HEXtoRGB(str: string) {
 
     // This region only works if the last condition is false.
     const arr = [];
-
     for (let i = 0; i < v.length; i += 2) {
         arr.push(v.slice(i, i + 2));
     }
@@ -58,13 +58,10 @@ function RGBtoHEX(str: string) {
         const v = str.replace(rgx.rgb, '').split(','),
 
             // Parses to hexadecimal base.
-            conv = (x: Array<string>) =>
-                x.map(x =>
-                    +x <= 0 ? '00'
-                        : +x < 16 ? `0${(+x).toString(16)}`
-                            : +x > 255 ? 'ff'
-                                : (+x).toString(16)
-                ).join('');
+            conv = (x: any[]) => x.map((x: string | number) => +x <= 0 ? '00'
+                : +x < 16 ? `0${(+x).toString(16)}`
+                    : +x > 255 ? 'ff'
+                        : (+x).toString(16)).join('');
 
         // If true returns the hex value, otherwise go ahead.
         if (v.length === 3)
@@ -80,9 +77,7 @@ function HEXtoHSL(str: string) {
     const def = 'hsl(0, 0%, 0%)';
 
     // If it is not a hex pattern returns default value.
-    if (typeof str !== 'string' ||
-        str.replace(rgx.space, '')
-            .match(rgx.invalidHex))
+    if (typeof str !== 'string' || !str.replace(rgx.space, '').match(rgx.validHex))
         return def;
 
     const v = HEXtoRGB(str)
@@ -100,38 +95,29 @@ function RGBtoHSL(str: string) {
     const def = 'hsl(0, 0%, 0%)';
 
     // If it is not a hex pattern returns default value.
-    if (typeof str !== 'string' ||
-        !str.replace(rgx.space, '')
-            .match(rgx.validRgb))
+    if (typeof str !== 'string' || !str.replace(rgx.space, '').match(rgx.validRgb))
         return def;
 
     const v = str
         .replace(rgx.rgb, '')
         .split(',')
-        .map(x => +x < 0 ? 0 : +x > 255 ? 255 : x),
-
-        c = v.slice(0, 3)
+        .map(x => +x < 0 ? 0 : +x > 255 ? 255 : x), c = v.slice(0, 3)
             .map(x => +x / 255),
+
         cmax = Math.max(...c),
-        cmin = Math.min(...c),
-        d = cmax - cmin,
+        cmin = Math.min(...c), d = cmax - cmin,
 
         h = d === 0 ? 0
-            : cmax == c[0] ?
-                60 * (((c[1] - c[2]) / d) % 6)
-                : cmax == c[1] ?
-                    60 * (((c[2] - c[0]) / d) + 2)
+            : cmax == c[0] ? 60 * (((c[1] - c[2]) / d) % 6)
+                : cmax == c[1] ? 60 * (((c[2] - c[0]) / d) + 2)
                     : 60 * (((c[0] - c[1]) / d) + 4),
 
         H = h < 0 ? 360 + h : h,
         L = (cmax + cmin) / 2,
-        S = d === 0 ? 0
-            : d / (1 - Math.abs(2 * L - 1)),
+        S = d === 0 ? 0 : d / (1 - Math.abs(2 * L - 1)),
 
-        hsl = [H.toFixed(),
-        `${(S * 100).toFixed()}%`,
-        `${(L * 100).toFixed()}%`]
-            .join(', ');
+        hsl = [H.toFixed(), `${(S * 100).toFixed()}%`, `${(L * 100).toFixed()
+            }%`].join(', ');
 
     // If true returns the hsl value, otherwise go ahead.
     if (v.length === 3)
@@ -150,8 +136,7 @@ function HSLtoRGB(str: string) {
     if (typeof str !== 'string')
         return def;
 
-    if (str.replace(rgx.space, '')
-        .match(rgx.validHsl)) {
+    if (str.replace(rgx.space, '').match(rgx.validHsl)) {
         const v = str
             .replace(rgx.hsl, '')
             .split(',')
@@ -161,24 +146,19 @@ function HSLtoRGB(str: string) {
             return def;
 
         v[0] = v[0] > 360 ? 360 : v[0];
-
-        const
-            H = v[0],
+        const H = v[0],
             S = v[1] / 100,
             L = v[2] / 100,
-
-            Z = (1 - Math.abs(2 * L - 1)) * S,
-            X = Z * (1 - Math.abs((H / 60) % 2 - 1)),
+            Z = (1 - Math.abs(2 * L - 1)) * S, X = Z * (1 - Math.abs((H / 60) % 2 - 1)),
             m = L - Z / 2,
-
             rgb = (H >= 0 && H < 60 ? [Z, X, 0]
-                : H >= 60 && H < 120 ? [X, Z, 0]
-                    : H >= 120 && H < 180 ? [0, Z, X]
-                        : H >= 180 && H < 240 ? [0, X, Z]
-                            : H >= 240 && H < 300 ? [X, 0, Z]
-                                : [Z, 0, X])
-                .map(x => ((x + m) * 255).toFixed())
-                .join(', ');
+            : H >= 60 && H < 120 ? [X, Z, 0]
+                : H >= 120 && H < 180 ? [0, Z, X]
+                    : H >= 180 && H < 240 ? [0, X, Z]
+                        : H >= 240 && H < 300 ? [X, 0, Z]
+                            : [Z, 0, X])
+            .map(x => ((x + m) * 255).toFixed())
+            .join(', ');
 
         // If true returns the hsl value, otherwise go ahead.
         if (v.length === 3)
