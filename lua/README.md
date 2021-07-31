@@ -1,6 +1,6 @@
-# stringFunctions.lua
+# string-functions.lua
 
-## *function* xASCII(	); 
+## *function* xascii(	); 
 
 ## Description
 ​	This function extends the ASCII printable characters from char 128 to char 255.  That means this function will convert all those chars listed below into a valid printable form.
@@ -10,7 +10,26 @@
 ## Usage
 
 ````lua
+local sf = require('string-functions')
 local str = 'A maçã que estava na árvore caíra no chão.'
-print(str)          -- A ma├º├ú que estava na ├írvore ca├¡ra no ch├úo.
-print(xASCII(str))  -- A maçã que estava na árvore caíra no chão. 
+print(str)             -- A ma├º├ú que estava na ├írvore ca├¡ra no ch├úo.
+print(sf.xascii(str))  -- A maçã que estava na árvore caíra no chão. 
+````
+
+
+
+## *function* split(	); 
+
+## Description
+
+​	This function split a string into substrings using the specified separator and return them as a table.
+​	If the separator is not defined returns the string splitted by the characters.
+
+## Usage
+
+````lua
+local sf = require('string-functions')
+local str = sf.split('alfa/beta/omega/zeta', '/')
+
+print(table.unpack(str))  -- alfa beta omega zeta
 ````
