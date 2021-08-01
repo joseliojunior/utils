@@ -7,7 +7,7 @@ Download the `string-functions.lua`, put it inside the folder that you going to 
 
 ````lua
 --- My-file.lua
-local sf = require('string-functions')
+local sf = require'string-functions'
 
 --- Current methods
 sf.split(string, string?) --> table
@@ -26,7 +26,7 @@ sf.xascii(string) --> string
 ## Usage
 
 ````lua
-local sf = require('string-functions')
+local sf = require'string-functions'
 local str = 'A maçã que estava na árvore caíra no chão.'
 print(str)             -- A ma├º├ú que estava na ├írvore ca├¡ra no ch├úo.
 print(sf.xascii(str))  -- A maçã que estava na árvore caíra no chão. 
@@ -44,7 +44,7 @@ print(sf.xascii(str))  -- A maçã que estava na árvore caíra no chão.
 ## Usage
 
 ````lua
-local sf = require('string-functions')
+local sf = require'string-functions'
 local str = sf.split('alfa/beta/omega/zeta', '/')
 
 print(table.unpack(str))  -- alfa beta omega zeta
