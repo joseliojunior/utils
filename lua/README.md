@@ -1,5 +1,21 @@
 # string-functions.lua
 
+## Usage
+
+It is a requirement that you have `Lua` installed in your machine.
+Download the `string-functions.lua`, put it inside the folder that you going to work and require it from your project file in `Lua`.
+
+````lua
+--- My-file.lua
+local sf = require('string-functions')
+
+--- Current methods
+sf.split(string, string?) --> table
+sf.xascii(string) --> string
+````
+
+
+
 ## *function* xascii(	); 
 
 ## Description
